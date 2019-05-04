@@ -28,5 +28,17 @@ namespace Quantum_Leap.Data
 
             throw new Exception("No Event is created");
         }
+
+        public IEnumerable<Event> GetAllEvents()
+        {
+     
+            using (var db = new SqlConnection(ConnectionString))
+            {
+                var events = db.Query<Event>("Select * from Events").ToList();
+
+                return events;
+            }
+            throw new Exception("No event found");
+        }
     }
 }

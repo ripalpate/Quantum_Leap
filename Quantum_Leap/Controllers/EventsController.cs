@@ -41,5 +41,12 @@ namespace Quantum_Leap.Controllers
             return Created($"api/events/{newEvent.Id}", newEvent);
 
         }
+
+        [HttpGet]
+        public ActionResult GetAllEvents()
+        {
+            var events = _eventRepository.GetAllEvents();
+            return Ok(events);
+        }
     }
 }
