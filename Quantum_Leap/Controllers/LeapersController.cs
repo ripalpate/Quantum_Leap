@@ -32,7 +32,7 @@ namespace Quantum_Leap.Controllers
 
             var newLeaper = _leaperRepository.AddLeaper(createRequest.Name, createRequest.Age);
 
-            return Created($"api/users/{newLeaper.Id}", newLeaper);
+            return Created($"api/leapers/{newLeaper.Id}", newLeaper);
 
         }
     }
