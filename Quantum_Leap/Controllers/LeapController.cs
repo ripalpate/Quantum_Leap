@@ -22,5 +22,13 @@ namespace Quantum_Leap.Controllers
 
         //    return Created(leap);
         //}
+
+        [HttpGet]
+        public ActionResult GetLeap()
+        {
+            var repository = new LeapRepository();
+            var getLeap = repository.GetLeap();
+            return Ok(getLeap);
+        }
     }
 }
