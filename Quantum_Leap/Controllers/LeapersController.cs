@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Quantum_Leap.Data;
 using Quantum_Leap.Models;
@@ -27,10 +25,10 @@ namespace Quantum_Leap.Controllers
         {
             if (_validator.Validate(createRequest))
             {
-                return BadRequest(new { error = "users must have a name and age" });
+                return BadRequest(new { error = "leaper must have a name" });
             }
 
-            var newLeaper = _leaperRepository.AddLeaper(createRequest.Name, createRequest.Age);
+            var newLeaper = _leaperRepository.AddLeaper(createRequest.Name, createRequest.Age, createRequest.BudgetAmount);
 
             return Created($"api/leapers/{newLeaper.Id}", newLeaper);
 

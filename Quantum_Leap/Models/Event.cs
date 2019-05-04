@@ -13,7 +13,5 @@ namespace Quantum_Leap.Models
         public DateTime Date { get; set; }
         public string Location { get; set; }
         public bool IsCorrected { get; set; }
-        public int LeapeeId { get; set; }
-
     }
 }

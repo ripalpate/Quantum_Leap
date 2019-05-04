@@ -11,6 +11,5 @@ namespace Quantum_Leap.Models
         public string Name { get; set; }
         public string Gender { get; set; }
         public string Profession { get; set; }
-        public int LeaperId { get; set; }
     }
 }

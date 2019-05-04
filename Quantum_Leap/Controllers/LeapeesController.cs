@@ -30,7 +30,7 @@ namespace Quantum_Leap.Controllers
                 return BadRequest(new { error = "leapee must have a name and profession" });
             }
 
-            var newLeapee = _leaperRepository.AddLeapee(createRequest.Name, createRequest.Profession, createRequest.Gender, createRequest.LeaperId);
+            var newLeapee = _leaperRepository.AddLeapee(createRequest.Name, createRequest.Profession, createRequest.Gender);
 
             return Created($"api/leapees/{newLeapee.Id}", newLeapee);
 
