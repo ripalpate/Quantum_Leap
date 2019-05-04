@@ -31,7 +31,13 @@ namespace Quantum_Leap.Controllers
             var newLeaper = _leaperRepository.AddLeaper(createRequest.Name, createRequest.Age, createRequest.BudgetAmount);
 
             return Created($"api/leapers/{newLeaper.Id}", newLeaper);
+        }
 
+        [HttpGet]
+        public ActionResult GetAllLeapers()
+        {
+            var leapers = _leaperRepository.GetAllLeapers();
+            return Ok(leapers);
         }
     }
 }

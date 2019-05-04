@@ -28,5 +28,17 @@ namespace Quantum_Leap.Data
 
             throw new Exception("No Leaper is created");
         }
+
+        public IEnumerable<Leaper> GetAllLeapers()
+        {
+            using (var db = new SqlConnection(ConnectionString))
+            {
+                var sql = "Select * from leapers";
+                var leapers = db.Query<Leaper>(sql).ToList();
+
+                return leapers;
+            }
+            throw new Exception("No Leaper found");
+        }
     }
 }

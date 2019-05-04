@@ -14,12 +14,12 @@ namespace Quantum_Leap.Controllers
     [ApiController]
     public class LeapeesController : ControllerBase
     {
-        readonly LeapeeRepository _leaperRepository;
+        readonly LeapeeRepository _leapeeRepository;
         readonly CreateLeapeeRequestValidator _validator;
         public LeapeesController()
         {
             _validator = new CreateLeapeeRequestValidator();
-            _leaperRepository = new LeapeeRepository();
+            _leapeeRepository = new LeapeeRepository();
 
         }
         [HttpPost]
@@ -30,10 +30,17 @@ namespace Quantum_Leap.Controllers
                 return BadRequest(new { error = "leapee must have a name and profession" });
             }
 
-            var newLeapee = _leaperRepository.AddLeapee(createRequest.Name, createRequest.Profession, createRequest.Gender);
+            var newLeapee = _leapeeRepository.AddLeapee(createRequest.Name, createRequest.Profession, createRequest.Gender);
 
             return Created($"api/leapees/{newLeapee.Id}", newLeapee);
 
+        }
+
+        [HttpGet]
+        public ActionResult GetAllLeapee()
+        {
+            var leapees = _leapeeRepository.GetAllLeapees();
+            return Ok(leapees);
         }
     }
 }
