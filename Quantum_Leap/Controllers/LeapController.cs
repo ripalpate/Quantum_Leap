@@ -13,16 +13,6 @@ namespace Quantum_Leap.Controllers
     [ApiController]
     public class LeapController : ControllerBase
     {
-        //[HttpPost]
-        //public ActionResult AddLeap(CreateLeapRequest createRequest)
-        //{
-        //    var repository = new LeapRepository();
-
-        //    var leap = repository.AddLeap(createRequest.LeaperId, createRequest.LeapeeId, createRequest.EventId, createRequest.Date);
-
-        //    return Created(leap);
-        //}
-
         [HttpGet]
         public ActionResult GetLeap()
         {

@@ -12,34 +12,44 @@ namespace Quantum_Leap.Data
     {
         const string ConnectionString = "Server = localhost; Database = QuantumLeaper; Trusted_Connection = True;";
 
-        //public Leap AddLeap(int leaperId, int leapeeId, int eventId, DateTime date, decimal cost)
-        //{
-        //    using (var db = new SqlConnection(ConnectionString))
-        //    {
-        //        var getLeaper = db.Query(@"Select l.Date, l.Cost, lr.BudgetAmount
-        //                                     From leap as l
-        //                                     Join Leapers as lr
-        //                                     On l.LeaperId = lr.Id;");
-        //        if (getLeaper[BudgetAmount] > 0)
-        //        {
+        public Leap AddLeap(int leaperId, int leapeeId, int eventId, DateTime date, decimal cost)
+        {
+            using (var db = new SqlConnection(ConnectionString))
+            {
+                var getRandomLeaper = db.QueryFirstOrDefault<Leaper>(@"Select TOP(1) lr.* 
+                                                                       From Leapers as lr
+                                                                       Order By NEWID()");
 
-        //            var newLeap = db.QueryFirstOrDefault<Leap>(@"Insert into leap (leaperId, leapeeId, eventId, date, cost)
-        //                                                    Output inserted.*
-        //                                                    Values(@leaperId, @leapeeId, @eventId, @date, @cost)",
-        //                                                         new { leaperId, leapeeId, eventId, date, cost });
+                var getRandomEvent = db.QueryFirstOrDefault<Event>(@"Select TOP(1) e.* 
+                                                                     From Events as e
+                                                                     Where e.isCorrected = 0
+                                                                     Order By NEWID()");
 
-        //            if (newLeap != null)
-        //            {
-        //                return newLeap;
-        //            }
-        //        }
-        //        else {
-        //            throw new Exception("you don't have enough budget");
-        //        }
-        //    }
+                var getRandomLeapee = db.QueryFirstOrDefault<Event>(@"Select TOP(1) le.* 
+                                                                     From Leapees as le
+                                                                     Order By NEWID()");
 
-        //    throw new Exception("No Leap is created");
-        //}
+                if (getRandomLeaper.BudgetAmount > cost)
+                {
+
+                    //var newLeap = db.QueryFirstOrDefault<Leap>(@"Insert into leap (leaperId, leapeeId, eventId, date, cost)
+                    //                                        Output inserted.*
+                    //                                        Values(@leaperId, @leapeeId, @eventId, @date, @cost)",
+                    //                                             new { leaperId, leapeeId, eventId, date, cost });
+
+                    //if (newLeap != null)
+                    //{
+                    //    return newLeap;
+                    //}
+                }
+                else
+                {
+                    throw new Exception("you don't have enough budget");
+                }
+            }
+
+            throw new Exception("No Leap is created");
+        }
 
         public IEnumerable<object> GetLeap()
         {
