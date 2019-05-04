@@ -23,7 +23,7 @@ namespace Quantum_Leap.Controllers
 
         }
         [HttpPost]
-        public ActionResult AddLeaper(CreateLeapeeRequest createRequest)
+        public ActionResult AddLeapee(CreateLeapeeRequest createRequest)
         {
             if (_validator.Validate(createRequest))
             {
