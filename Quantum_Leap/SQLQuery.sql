@@ -1,10 +1,10 @@
-Select * from Leapees
-
 Select * from Leapers
 
+Select * from Leapees;
 Select * from Events
 
 Select * from Leap
+
 
 -- Insert Leap
 declare @leaperId int = 1
@@ -17,7 +17,7 @@ Output inserted.*
 Values(@leaperId, @leapeeId, @eventId, @date, @cost);
 
 --Get Leap with leaper,leapee and Event information
-Select l.Id, l.Cost, lr.*, e.*, le.*
+Select l.Id, l.Cost as LeapCost, lr.LeaperName, le.LeapeeName, e.EventName, e.Description, e.Date, e.Location
 From leap as l
 Join Leapers as lr
 On l.LeaperId = lr.Id
@@ -50,8 +50,28 @@ Set Cost = 35000,
 	Date = '1954-09-04'
 Where id = 3;
 
+--getting events based on leapee
+Select le.*, e. * 
+from Leapees as le, events as e 
+Where le.Id = e.LeapeeId;
 
-Select l.Id, l.Cost, lr.Name, lr.BudgetAmount
-From leap as l
-Join Leapers as lr
-On l.LeaperId = lr.Id;
+--getting random leapee with Event information
+Select TOP(1) le.LeapeeName, e.EventName, e.Description, e.Date,e.Location, e.IsCorrected 
+From events as e, Leapees as le
+Where e.LeapeeId = le.Id
+Order By NEWID();
+
+Select * from Leapees;
+Select TOP(1) Leapees.Id from Leapees where Id in (Select leapeeId from events) 
+Order By NEWID();
+
+declare @leapeeId1 int = 4
+Select Top(1) Events.Id
+From Events
+Where leapeeId = @leapeeId1 and isCorrected = 0
+
+-- updating leaper with budgeted amount
+declare @cost1 decimal(8,2) = 10000
+declare @leaperId1 int = 1
+Update Leapers Set BudgetAmount = BudgetAmount - @cost1 Where Id = @leaperId1
+

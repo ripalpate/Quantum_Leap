@@ -16,37 +16,42 @@ namespace Quantum_Leap.Data
         {
             using (var db = new SqlConnection(ConnectionString))
             {
-                var getRandomLeaper = db.QueryFirstOrDefault<Leaper>(@"Select TOP(1) lr.* 
+                var getRandomLeaper = db.QueryFirstOrDefault<Leaper>(@"Select Top(1) lr.* 
                                                                        From Leapers as lr
                                                                        Order By NEWID()");
 
-                var getRandomEvent = db.QueryFirstOrDefault<Event>(@"Select TOP(1) e.* 
-                                                                     From Events as e
-                                                                     Where e.isCorrected = 0
-                                                                     Order By NEWID()");
-
-                var getRandomLeapee = db.QueryFirstOrDefault<Event>(@"Select TOP(1) le.* 
-                                                                     From Leapees as le
-                                                                     Order By NEWID()");
+                var getRandomLeapee = db.QueryFirstOrDefault<Leapee>(@"Select Top(1) le.Id 
+                                                                        From Leapees as le 
+                                                                        Where Id in (Select leapeeId from events where isCorrected = 0) 
+                                                                        Order By NEWID();");
 
                 @leaperId = getRandomLeaper.Id;
                 @leapeeId = getRandomLeapee.Id;
-                @eventId = getRandomEvent.Id;
+
+                var getEventAssociatedWithLeapee = db.QueryFirstOrDefault<Event>(@"Select Top(1) e.Id
+                                                                                   From Events as e
+                                                                                   Where e.LeapeeId = @leapeeId and e.IsCorrected = 0 
+                                                                                   and e.Id Not In(Select EventId from Leap)", 
+                                                                                   new { leapeeId});
+
+                @eventId = getEventAssociatedWithLeapee.Id;
+
+
                 if (getRandomLeaper.BudgetAmount > cost)
                 {
                     var newLeap = db.QueryFirstOrDefault<Leap>(@"Insert into leap (leaperId, leapeeId, eventId, cost)
                                                             Output inserted.*
                                                             Values(@leaperId, @leapeeId, @eventId, @cost)",
                                                                  new { leaperId, leapeeId, eventId, cost });
-
                     if (newLeap != null)
                     {
+                        var updateLeaper = db.Execute(@"Update Leapers Set BudgetAmount = BudgetAmount - @cost Where Id = @leaperId", new { leaperId, cost});
                         return newLeap;
                     }
                 }
                 else
                 {
-                    throw new Exception("you don't have enough budget");
+                    throw new Exception("you can not leap beacuase you don't have enough budget");
                 }
             }
 

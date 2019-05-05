@@ -35,7 +35,8 @@ namespace Quantum_Leap.Controllers
                 createRequest.Description, 
                 createRequest.Date, 
                 createRequest.Location,
-                createRequest.IsCorrected
+                createRequest.IsCorrected,
+                createRequest.LeapeeId
                 );
 
             return Created($"api/events/{newEvent.Id}", newEvent);

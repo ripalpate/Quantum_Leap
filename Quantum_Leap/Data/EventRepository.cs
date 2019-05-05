@@ -12,14 +12,14 @@ namespace Quantum_Leap.Data
     {
         const string ConnectionString = "Server = localhost; Database = QuantumLeaper; Trusted_Connection = True;";
 
-        public Event AddEvent(string eventName, string description, DateTime date, string location, bool isCorrected)
+        public Event AddEvent(string eventName, string description, DateTime date, string location, bool isCorrected, int leapeeId)
         {
             using (var db = new SqlConnection(ConnectionString))
             {
-                var newEvent = db.QueryFirstOrDefault<Event>(@"Insert into events (eventName, description, date, location, isCorrected)
+                var newEvent = db.QueryFirstOrDefault<Event>(@"Insert into events (eventName, description, date, location, isCorrected, leapeeId)
                                                             Output inserted.*
-                                                            Values(@eventName, @description, @date, @location, @isCorrected)",
-                                                             new { eventName, description, date, location, isCorrected });
+                                                            Values(@eventName, @description, @date, @location, @isCorrected, @leapeeId)",
+                                                             new { eventName, description, date, location, isCorrected, leapeeId });
                 if (newEvent != null)
                 {
                     return newEvent;
