@@ -65,13 +65,18 @@ Select * from Leapees;
 Select TOP(1) Leapees.Id from Leapees where Id in (Select leapeeId from events) 
 Order By NEWID();
 
-declare @leapeeId1 int = 4
-Select Top(1) Events.Id
-From Events
-Where leapeeId = @leapeeId1 and isCorrected = 0
 
 -- updating leaper with budgeted amount
 declare @cost1 decimal(8,2) = 10000
 declare @leaperId1 int = 1
 Update Leapers Set BudgetAmount = BudgetAmount - @cost1 Where Id = @leaperId1
+
+Select * from Leap
+
+-- query for ensuring Leap table doesn't have existing event and getting event
+declare @leapeeId2 int = 1
+Select e.Id as EventId
+From Events as e
+Where e.LeapeeId = @leapeeId2 and e.IsCorrected = 0 
+and e.Id Not In(Select EventId from Leap)
 

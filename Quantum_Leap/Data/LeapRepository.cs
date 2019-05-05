@@ -45,7 +45,9 @@ namespace Quantum_Leap.Data
                                                                  new { leaperId, leapeeId, eventId, cost });
                     if (newLeap != null)
                     {
-                        var updateLeaper = db.Execute(@"Update Leapers Set BudgetAmount = BudgetAmount - @cost Where Id = @leaperId", new { leaperId, cost});
+                        var updateLeaper = db.Execute(@"Update Leapers 
+                                                        Set BudgetAmount = BudgetAmount - @cost 
+                                                        Where Id = @leaperId", new { leaperId, cost});
                         return newLeap;
                     }
                 }
