@@ -10,7 +10,7 @@ namespace Quantum_Leap.Models
         public int LeaperId { get; set; }
         public int LeapeeId { get; set; }
         public int EventId { get; set; }
-        public DateTime Date { get; set; }
+       // public DateTime Date { get; set; }
         public decimal Cost { get; set; }
     }
 }

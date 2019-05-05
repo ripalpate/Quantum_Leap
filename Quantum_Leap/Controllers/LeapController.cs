@@ -20,5 +20,15 @@ namespace Quantum_Leap.Controllers
             var getLeap = repository.GetLeap();
             return Ok(getLeap);
         }
+
+        [HttpPost]
+        public ActionResult AddLeapee(CreateLeapRequest createRequest)
+        {
+            var repository = new LeapRepository();
+            var newLeapee = repository.AddLeap(createRequest.LeaperId, createRequest.LeapeeId, createRequest.EventId, createRequest.Cost);
+
+            return Created($"api/leapees/{newLeapee.Id}", newLeapee);
+
+        }
     }
 }

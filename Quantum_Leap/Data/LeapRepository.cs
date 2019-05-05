@@ -12,7 +12,7 @@ namespace Quantum_Leap.Data
     {
         const string ConnectionString = "Server = localhost; Database = QuantumLeaper; Trusted_Connection = True;";
 
-        public Leap AddLeap(int leaperId, int leapeeId, int eventId, DateTime date, decimal cost)
+        public Leap AddLeap(int leaperId, int leapeeId, int eventId, decimal cost)
         {
             using (var db = new SqlConnection(ConnectionString))
             {
@@ -29,18 +29,20 @@ namespace Quantum_Leap.Data
                                                                      From Leapees as le
                                                                      Order By NEWID()");
 
+                @leaperId = getRandomLeaper.Id;
+                @leapeeId = getRandomLeapee.Id;
+                @eventId = getRandomEvent.Id;
                 if (getRandomLeaper.BudgetAmount > cost)
                 {
+                    var newLeap = db.QueryFirstOrDefault<Leap>(@"Insert into leap (leaperId, leapeeId, eventId, cost)
+                                                            Output inserted.*
+                                                            Values(@leaperId, @leapeeId, @eventId, @cost)",
+                                                                 new { leaperId, leapeeId, eventId, cost });
 
-                    //var newLeap = db.QueryFirstOrDefault<Leap>(@"Insert into leap (leaperId, leapeeId, eventId, date, cost)
-                    //                                        Output inserted.*
-                    //                                        Values(@leaperId, @leapeeId, @eventId, @date, @cost)",
-                    //                                             new { leaperId, leapeeId, eventId, date, cost });
-
-                    //if (newLeap != null)
-                    //{
-                    //    return newLeap;
-                    //}
+                    if (newLeap != null)
+                    {
+                        return newLeap;
+                    }
                 }
                 else
                 {
