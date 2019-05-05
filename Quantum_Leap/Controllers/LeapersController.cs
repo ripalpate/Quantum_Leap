@@ -28,7 +28,7 @@ namespace Quantum_Leap.Controllers
                 return BadRequest(new { error = "leaper must have a name" });
             }
 
-            var newLeaper = _leaperRepository.AddLeaper(createRequest.Name, createRequest.Age, createRequest.BudgetAmount);
+            var newLeaper = _leaperRepository.AddLeaper(createRequest.LeaperName, createRequest.Age, createRequest.BudgetAmount);
 
             return Created($"api/leapers/{newLeaper.Id}", newLeaper);
         }

@@ -31,7 +31,7 @@ namespace Quantum_Leap.Controllers
             }
 
             var newEvent = _eventRepository.AddEvent(
-                createRequest.Name, 
+                createRequest.EventName, 
                 createRequest.Description, 
                 createRequest.Date, 
                 createRequest.Location,

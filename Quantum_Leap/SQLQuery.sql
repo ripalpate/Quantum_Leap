@@ -17,7 +17,7 @@ Output inserted.*
 Values(@leaperId, @leapeeId, @eventId, @date, @cost);
 
 --Get Leap with leaper,leapee and Event information
-Select l.Date, l.Cost, lr.*, e.*, le.*
+Select l.Id, l.Cost, lr.*, e.*, le.*
 From leap as l
 Join Leapers as lr
 On l.LeaperId = lr.Id
@@ -51,7 +51,7 @@ Set Cost = 35000,
 Where id = 3;
 
 
-Select l.Date, l.Cost, lr.Name, lr.BudgetAmount
+Select l.Id, l.Cost, lr.Name, lr.BudgetAmount
 From leap as l
 Join Leapers as lr
 On l.LeaperId = lr.Id;

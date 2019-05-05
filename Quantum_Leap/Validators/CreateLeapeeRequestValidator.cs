@@ -10,7 +10,7 @@ namespace Quantum_Leap.Validators
     {
         public bool Validate(CreateLeapeeRequest requestToValidate)
         {
-            return (string.IsNullOrEmpty(requestToValidate.Name) ||
+            return (string.IsNullOrEmpty(requestToValidate.LeapeeName) ||
                 string.IsNullOrEmpty(requestToValidate.Profession));
         }
     }

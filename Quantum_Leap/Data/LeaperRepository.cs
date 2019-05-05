@@ -12,14 +12,14 @@ namespace Quantum_Leap.Data
     {
         const string ConnectionString = "Server = localhost; Database = QuantumLeaper; Trusted_Connection = True;";
 
-        public Leaper AddLeaper(string name, int age, decimal budgetAmount)
+        public Leaper AddLeaper(string leaperName, int age, decimal budgetAmount)
         {
             using (var db = new SqlConnection(ConnectionString))
             {
-                var newLeaper = db.QueryFirstOrDefault<Leaper>(@"Insert into leapers (name,age, budgetAmount)
+                var newLeaper = db.QueryFirstOrDefault<Leaper>(@"Insert into leapers (leaperName,age, budgetAmount)
                                                             Output inserted.*
-                                                            Values(@name,@age, @budgetAmount)",
-                                                             new { name, age, budgetAmount });
+                                                            Values(@leaperName,@age, @budgetAmount)",
+                                                             new { leaperName, age, budgetAmount });
                 if (newLeaper != null)
                 {
                     return newLeaper;

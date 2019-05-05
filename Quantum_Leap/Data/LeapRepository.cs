@@ -57,14 +57,14 @@ namespace Quantum_Leap.Data
         {
             using (var db = new SqlConnection(ConnectionString))
             {
-                var sql = @"Select l.Date, l.Cost, lr.*, e.*, le.*
-                           From leap as l
-                           Join Leapers as lr
-                           On l.LeaperId = lr.Id
-                           Join Leapees as le
-                           On l.LeapeeId = le.Id
-                           Join Events as e
-                           On l.EventId = e.Id";
+                var sql = @"Select l.Id, l.Cost as LeapCost, lr.LeaperName, le.LeapeeName, e.EventName, e.Description, e.Date, e.Location
+                            From leap as l
+                            Join Leapers as lr
+                            On l.LeaperId = lr.Id
+                            Join Leapees as le
+                            On l.LeapeeId = le.Id
+                            Join Events as e
+                            On l.EventId = e.Id;";
                 var getLeap = db.Query<object>(sql);
                 return getLeap;
             }
