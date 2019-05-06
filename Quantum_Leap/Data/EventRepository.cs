@@ -40,5 +40,22 @@ namespace Quantum_Leap.Data
             }
             throw new Exception("No event found");
         }
+
+        public void DeleteEvent(int eventId)
+        {
+            using (var db = new SqlConnection(ConnectionString))
+            {
+                var deleteQuery = "Delete From Events where Id = @eventId";
+
+                var parameter = new { eventId };
+
+                var rowsAffected = db.Execute(deleteQuery, parameter);
+
+                if (rowsAffected != 1)
+                {
+                    throw new Exception("Didn't do right");
+                }
+            }
+        }
     }
 }
