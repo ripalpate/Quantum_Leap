@@ -40,5 +40,23 @@ namespace Quantum_Leap.Data
             }
             throw new Exception("No Leaper found");
         }
+
+        public void DeleteLeaper(int id)
+        {
+            using (var db = new SqlConnection(ConnectionString))
+            { 
+                var deleteQuery = "Delete From Leapers where Id = @id";
+
+                var parameter = new { id };
+
+                var rowsAffected = db.Execute(deleteQuery, parameter);
+
+                if (rowsAffected != 1)
+                {
+                    throw new Exception("Didn't do right");
+                }
+            }
+        }
+
     }
 }

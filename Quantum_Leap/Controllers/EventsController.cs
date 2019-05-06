@@ -49,5 +49,6 @@ namespace Quantum_Leap.Controllers
             var events = _eventRepository.GetAllEvents();
             return Ok(events);
         }
+
     }
 }

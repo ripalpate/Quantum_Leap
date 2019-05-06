@@ -39,5 +39,22 @@ namespace Quantum_Leap.Data
             }
             throw new Exception("No Leapee found");
         }
+
+        public void DeleteLeapee(int leapeeId)
+        {
+            using (var db = new SqlConnection(ConnectionString))
+            {
+                var deleteQuery = "Delete From Leapees where Id = @leapeeId";
+
+                var parameter = new { leapeeId };
+
+                var rowsAffected = db.Execute(deleteQuery, parameter);
+
+                if (rowsAffected != 1)
+                {
+                    throw new Exception("Didn't do right");
+                }
+            }
+        }
     }
 }

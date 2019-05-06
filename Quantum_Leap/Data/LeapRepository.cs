@@ -137,7 +137,7 @@ namespace Quantum_Leap.Data
                 var getSingleLeap = db.QueryFirstOrDefault<object>(sql, parameter);
                 return getSingleLeap;
             }
-            throw new Exception("No leap found");
+            throw new Exception("No single leap found");
         }
     }
 }

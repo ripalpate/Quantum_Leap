@@ -42,5 +42,12 @@ namespace Quantum_Leap.Controllers
             var leapees = _leapeeRepository.GetAllLeapees();
             return Ok(leapees);
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteLeapee(int id)
+        {
+            _leapeeRepository.DeleteLeapee(id);
+            return Ok($"Leapee with id {id} is deleted");
+        }
     }
 }
