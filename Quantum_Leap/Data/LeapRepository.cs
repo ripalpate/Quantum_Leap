@@ -39,25 +39,8 @@ namespace Quantum_Leap.Data
         //    throw new Exception("No Leap is created");
         //}
 
-        public IEnumerable<object> GetAllLeap()
+        public Leaper getRandomLeaper()
         {
-            using (var db = new SqlConnection(ConnectionString))
-            {
-                var sql = @"Select l.Id, l.Cost as LeapCost, lr.LeaperName, le.LeapeeName, e.EventName, e.Description, e.Date, e.Location
-                            From leap as l
-                            Join Leapers as lr
-                            On l.LeaperId = lr.Id
-                            Join Leapees as le
-                            On l.LeapeeId = le.Id
-                            Join Events as e
-                            On l.EventId = e.Id;";
-                var getLeap = db.Query<object>(sql);
-                return getLeap;
-            }
-            throw new Exception("No leap found");
-        }
-
-        public Leaper getRandomLeaper() {
 
             using (var db = new SqlConnection(ConnectionString))
             {
@@ -65,7 +48,7 @@ namespace Quantum_Leap.Data
                                                                        From Leapers as lr
                                                                        Order By NEWID()");
                 return randomLeaper;
-            }    
+            }
         }
 
         public Leapee getRandomLeapee()
@@ -92,7 +75,7 @@ namespace Quantum_Leap.Data
                             Where e.LeapeeId = @leapeeId and e.IsCorrected = 0 
                             And e.Id Not In(Select EventId from Leap)";
                 var parameter = new { leapeeId };
-                var leapeeEvent = db.QueryFirstOrDefault<Event>(sql,parameter);
+                var leapeeEvent = db.QueryFirstOrDefault<Event>(sql, parameter);
                 return leapeeEvent;
             }
         }
@@ -117,6 +100,44 @@ namespace Quantum_Leap.Data
                 }
                 return newLeap;
             }
+        }
+
+        public IEnumerable<object> GetAllLeap()
+        {
+            using (var db = new SqlConnection(ConnectionString))
+            {
+                var sql = @"Select l.Id, l.Cost as LeapCost, lr.LeaperName, le.LeapeeName, e.EventName, e.Description, e.Date, e.Location
+                            From leap as l
+                            Join Leapers as lr
+                            On l.LeaperId = lr.Id
+                            Join Leapees as le
+                            On l.LeapeeId = le.Id
+                            Join Events as e
+                            On l.EventId = e.Id;";
+                var getLeap = db.Query<object>(sql);
+                return getLeap;
+            }
+            throw new Exception("No leap found");
+        }
+
+        public object GetSingleLeap(int leapId)
+        {
+            using (var db = new SqlConnection(ConnectionString))
+            {
+                var sql = @"Select l.Id, l.Cost as LeapCost, lr.LeaperName, le.LeapeeName, e.EventName, e.Description as 'Event Description', e.Date as 'Event Date', e.Location as 'Event Location'
+                            From leap as l
+                            Join Leapers as lr
+                            On l.LeaperId = lr.Id
+                            Join Leapees as le
+                            On l.LeapeeId = le.Id
+                            Join Events as e
+                            On l.EventId = e.Id
+                            Where l.Id = @leapId;";
+                var parameter = new { leapId };
+                var getSingleLeap = db.QueryFirstOrDefault<object>(sql, parameter);
+                return getSingleLeap;
+            }
+            throw new Exception("No leap found");
         }
     }
 }

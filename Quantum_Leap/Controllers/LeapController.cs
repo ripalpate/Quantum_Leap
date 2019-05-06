@@ -48,13 +48,14 @@ namespace Quantum_Leap.Controllers
             {
                 return BadRequest("Sorry, you can not leap because you don't have enough budget. Better luck next time");
             }
+        }
 
-           
-           
-           
-
-            
-
+        [HttpGet("{id}")]
+        public ActionResult GetSingleLeap(int id)
+        { 
+            var repository = new LeapRepository();
+            var singleLeap = repository.GetSingleLeap(id);
+            return Ok(singleLeap);
         }
     }
 }
