@@ -17,7 +17,7 @@ namespace Quantum_Leap.Controllers
         public ActionResult GetLeap()
         {
             var repository = new LeapRepository();
-            var getLeap = repository.GetLeap();
+            var getLeap = repository.GetAllLeap();
             return Ok(getLeap);
         }
 

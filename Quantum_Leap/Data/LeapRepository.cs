@@ -31,36 +31,40 @@ namespace Quantum_Leap.Data
                 var getEventAssociatedWithLeapee = db.QueryFirstOrDefault<Event>(@"Select Top(1) e.Id
                                                                                    From Events as e
                                                                                    Where e.LeapeeId = @leapeeId and e.IsCorrected = 0 
-                                                                                   and e.Id Not In(Select EventId from Leap)", 
-                                                                                   new { leapeeId});
-
-                @eventId = getEventAssociatedWithLeapee.Id;
+                                                                                   and e.Id Not In(Select EventId from Leap)",
+                                                                                   new { leapeeId });
 
 
-                if (getRandomLeaper.BudgetAmount > cost)
-                {
-                    var newLeap = db.QueryFirstOrDefault<Leap>(@"Insert into leap (leaperId, leapeeId, eventId, cost)
-                                                            Output inserted.*
-                                                            Values(@leaperId, @leapeeId, @eventId, @cost)",
-                                                                 new { leaperId, leapeeId, eventId, cost });
-                    if (newLeap != null)
+                @eventId = getEventAssociatedWithLeapee != null ? getEventAssociatedWithLeapee.Id : 0;
+
+                if (@eventId != 0) {
+                    if (getRandomLeaper.BudgetAmount > cost)
                     {
-                        var updateLeaper = db.Execute(@"Update Leapers 
-                                                        Set BudgetAmount = BudgetAmount - @cost 
-                                                        Where Id = @leaperId", new { leaperId, cost});
-                        return newLeap;
+                        var newLeap = db.QueryFirstOrDefault<Leap>(@"Insert into leap (leaperId, leapeeId, eventId, cost)
+                                                                Output inserted.*
+                                                                Values(@leaperId, @leapeeId, @eventId, @cost)",
+                                                                     new { leaperId, leapeeId, eventId, cost });
+                        if (newLeap != null)
+                        {
+                            var updateLeaper = db.Execute(@"Update Leapers 
+                                                            Set BudgetAmount = BudgetAmount - @cost 
+                                                            Where Id = @leaperId", new { leaperId, cost });
+                            return newLeap;
+                        }
                     }
-                }
-                else
-                {
-                    throw new Exception("you can not leap beacuase you don't have enough budget");
+                    else
+                    {
+                        throw new Exception("you can not leap beacuase you don't have enough budget");
+                    }
+                } else {
+                    throw new Exception("Event already exist in another leap for that leapee");
                 }
             }
 
             throw new Exception("No Leap is created");
         }
 
-        public IEnumerable<object> GetLeap()
+        public IEnumerable<object> GetAllLeap()
         {
             using (var db = new SqlConnection(ConnectionString))
             {

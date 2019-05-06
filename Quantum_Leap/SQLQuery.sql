@@ -1,9 +1,11 @@
-Select * from Leapers
 
 Select * from Leapees;
+
 Select * from Events
 
 Select * from Leap
+
+Select * from Leapers
 
 
 -- Insert Leap
