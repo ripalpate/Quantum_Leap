@@ -73,10 +73,11 @@ namespace Quantum_Leap.Data
 
             using (var db = new SqlConnection(ConnectionString))
             {
-                var randomLeapee = db.QueryFirstOrDefault<Leapee>(@"Select Top(1) le.Id 
-                                                                        From Leapees as le 
-                                                                        Where Id in (Select leapeeId from events where isCorrected = 0) 
-                                                                        Order By NEWID();");
+                var sql = @"Select Top(1) le.Id 
+                            From Leapees as le 
+                            Where Id in (Select leapeeId from events where isCorrected = 0) 
+                            Order By NEWID();";
+                var randomLeapee = db.QueryFirstOrDefault<Leapee>(sql);
                 return randomLeapee;
             }
         }
@@ -86,11 +87,12 @@ namespace Quantum_Leap.Data
 
             using (var db = new SqlConnection(ConnectionString))
             {
-                var leapeeEvent = db.QueryFirstOrDefault<Event>(@"Select Top(1) e.Id
-                                                                  From Events as e
-                                                                  Where e.LeapeeId = @leapeeId and e.IsCorrected = 0 
-                                                                  And e.Id Not In(Select EventId from Leap)",
-                                                                  new { leapeeId });
+                var sql = @"Select Top(1) e.Id
+                            From Events as e
+                            Where e.LeapeeId = @leapeeId and e.IsCorrected = 0 
+                            And e.Id Not In(Select EventId from Leap)";
+                var parameter = new { leapeeId };
+                var leapeeEvent = db.QueryFirstOrDefault<Event>(sql,parameter);
                 return leapeeEvent;
             }
         }
@@ -100,15 +102,18 @@ namespace Quantum_Leap.Data
 
             using (var db = new SqlConnection(ConnectionString))
             {
-                var newLeap = db.QueryFirstOrDefault<Leap>(@"Insert into leap (leaperId, leapeeId, eventId, cost)
-                                                             Output inserted.*
-                                                             Values(@leaperId, @leapeeId, @eventId, @cost)",
-                                                            new { leaperId, leapeeId, eventId, cost });
+                var sql = @"Insert into leap (leaperId, leapeeId, eventId, cost)
+                            Output inserted.*
+                            Values(@leaperId, @leapeeId, @eventId, @cost)";
+                var parameter = new { leaperId, leapeeId, eventId, cost };
+                var newLeap = db.QueryFirstOrDefault<Leap>(sql, parameter);
                 if (newLeap != null)
                 {
-                    var updateLeaper = db.Execute(@"Update Leapers 
-                                                    Set BudgetAmount = BudgetAmount - @cost 
-                                                    Where Id = @leaperId", new { leaperId, cost });
+                    var updateSql = @"Update Leapers 
+                                      Set BudgetAmount = BudgetAmount - @cost 
+                                      Where Id = @leaperId";
+                    var updateParameter = new { leaperId, cost };
+                    var updateLeaper = db.Execute(updateSql, updateParameter);
                 }
                 return newLeap;
             }

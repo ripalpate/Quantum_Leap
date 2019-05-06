@@ -36,7 +36,7 @@ namespace Quantum_Leap.Controllers
                 eventId = eventAssociatedWithLeapee.Id;
             } else
             {
-                return BadRequest("Event already exist in another leap for that leapee. Please try again");
+                return NotFound("Event already exist in another leap for that leapee. Please try again");
             }
             
             if (randomLeaper.BudgetAmount > createRequest.Cost)
