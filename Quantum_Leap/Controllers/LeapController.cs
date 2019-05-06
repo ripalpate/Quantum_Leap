@@ -25,9 +25,35 @@ namespace Quantum_Leap.Controllers
         public ActionResult AddLeapee(CreateLeapRequest createRequest)
         {
             var repository = new LeapRepository();
-            var newLeapee = repository.AddLeap(createRequest.LeaperId, createRequest.LeapeeId, createRequest.EventId, createRequest.Cost);
+            var randomLeaper = repository.getRandomLeaper();
+            int @leaperId = randomLeaper.Id;
+            int @leapeeId = repository.getRandomLeapee().Id;
+            int @eventId = 0;
+            var eventAssociatedWithLeapee = repository.getEventAssociatedWithLeapee(leapeeId);
 
-            return Created($"api/leapees/{newLeapee.Id}", newLeapee);
+            if (eventAssociatedWithLeapee != null)
+            {
+                eventId = eventAssociatedWithLeapee.Id;
+            } else
+            {
+                return BadRequest("Event already exist in another leap for that leapee. Please try again");
+            }
+            
+            if (randomLeaper.BudgetAmount > createRequest.Cost)
+            {
+                var newLeap = repository.insertLeapAndUpdateBudget(leaperId, leapeeId, eventId, createRequest.Cost);
+                return Created($"api/leapees/{newLeap.Id}", newLeap);
+            }
+            else
+            {
+                return BadRequest("Sorry, you can not leap because you don't have enough budget. Better luck next time");
+            }
+
+           
+           
+           
+
+            
 
         }
     }
