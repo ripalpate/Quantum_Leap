@@ -7,7 +7,6 @@ Select * from Leap
 
 Select * from Leapers
 
-
 -- Insert Leap
 declare @leaperId int = 1
 declare @eventId int =1
@@ -18,7 +17,7 @@ Insert into Leap (leaperId, leapeeId, eventId, date, cost)
 Output inserted.*
 Values(@leaperId, @leapeeId, @eventId, @date, @cost);
 
---Get Leap with leaper,leapee and Event information
+--Get all Leaps with leaper,leapee and Event information
 Select l.Id, l.Cost as LeapCost, lr.LeaperName, le.LeapeeName, e.EventName, e.Description, e.Date, e.Location
 From leap as l
 Join Leapers as lr
@@ -81,4 +80,17 @@ Select e.Id as EventId
 From Events as e
 Where e.LeapeeId = @leapeeId2 and e.IsCorrected = 0 
 and e.Id Not In(Select EventId from Leap)
+
+
+-- given single leap, get leaper, event and leapee information from the leap table
+Declare @LeapId int = 9
+Select l.Id, l.Cost as LeapCost, lr.LeaperName, le.LeapeeName, e.EventName, e.Description as 'Event Description', e.Date as 'Event Date', e.Location as 'Event Location'
+From leap as l
+Join Leapers as lr
+On l.LeaperId = lr.Id
+Join Leapees as le
+On l.LeapeeId = le.Id
+Join Events as e
+On l.EventId = e.Id
+Where l.Id = @leapId;
 
