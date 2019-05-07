@@ -25,11 +25,11 @@ namespace Quantum_Leap.Controllers
         public ActionResult AddLeapee(CreateLeapRequest createRequest)
         {
             var repository = new LeapRepository();
-            var randomLeaper = repository.getRandomLeaper();
+            var randomLeaper = repository.GetRandomLeaper();
             int @leaperId = randomLeaper.Id;
-            int @leapeeId = repository.getRandomLeapee().Id;
+            int @leapeeId = repository.GetRandomLeapee().Id;
             int @eventId = 0;
-            var eventAssociatedWithLeapee = repository.getEventAssociatedWithLeapee(leapeeId);
+            var eventAssociatedWithLeapee = repository.GetEventAssociatedWithLeapee(leapeeId);
 
             if (eventAssociatedWithLeapee != null)
             {
@@ -41,7 +41,7 @@ namespace Quantum_Leap.Controllers
             
             if (randomLeaper.BudgetAmount > createRequest.Cost)
             {
-                var newLeap = repository.insertLeapAndUpdateBudget(leaperId, leapeeId, eventId, createRequest.Cost);
+                var newLeap = repository.AddLeapAndUpdateBudget(leaperId, leapeeId, eventId, createRequest.Cost);
                 return Created($"api/leapees/{newLeap.Id}", newLeap);
             }
             else

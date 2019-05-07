@@ -12,34 +12,7 @@ namespace Quantum_Leap.Data
     {
         const string ConnectionString = "Server = localhost; Database = QuantumLeaper; Trusted_Connection = True;";
 
-        //public Leap AddLeap(int leaperId, int leapeeId, int eventId, decimal cost)
-        //{
-        //    using (var db = new SqlConnection(ConnectionString))
-        //    {
-        //        @leaperId = getRandomLeaper().Id;
-        //        @leapeeId = getRandomLeapee().Id;
-
-        //        @eventId = getEventAssociatedWithLeapee(leapeeId) != null? getEventAssociatedWithLeapee(leapeeId).Id : 0; 
-
-
-        //        if (@eventId != 0) {
-        //            if (getRandomLeaper().BudgetAmount > cost)
-        //            {
-        //                insertLeapAndUpdateBudget(leaperId, leapeeId, eventId, cost);
-        //            }
-        //            else
-        //            {
-        //                throw new Exception ("you can not leap because you don't have enough budget");
-        //            }
-        //        } else { 
-        //            throw new Exception("Event already exist in another leap for that leapee");
-        //        }
-        //    }
-
-        //    throw new Exception("No Leap is created");
-        //}
-
-        public Leaper getRandomLeaper()
+        public Leaper GetRandomLeaper()
         {
 
             using (var db = new SqlConnection(ConnectionString))
@@ -51,7 +24,7 @@ namespace Quantum_Leap.Data
             }
         }
 
-        public Leapee getRandomLeapee()
+        public Leapee GetRandomLeapee()
         {
 
             using (var db = new SqlConnection(ConnectionString))
@@ -65,7 +38,7 @@ namespace Quantum_Leap.Data
             }
         }
 
-        public Event getEventAssociatedWithLeapee(int leapeeId)
+        public Event GetEventAssociatedWithLeapee(int leapeeId)
         {
 
             using (var db = new SqlConnection(ConnectionString))
@@ -80,7 +53,7 @@ namespace Quantum_Leap.Data
             }
         }
 
-        public Leap insertLeapAndUpdateBudget(int leaperId, int leapeeId, int eventId, decimal cost)
+        public Leap AddLeapAndUpdateBudget(int leaperId, int leapeeId, int eventId, decimal cost)
         {
 
             using (var db = new SqlConnection(ConnectionString))
